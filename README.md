@@ -1,7 +1,6 @@
-# MechrevoControlCenterLanguageChanger
 Language Changer(patcher) for Control Center(Mechrevo, Machenike, etc..)
 ======================================================
-Mechrevo / XMG Control Center Language Changer v2.0
+# Mechrevo / XMG Control Center Language Changer v2.0
 Author: ycukenta
 ======================================================
 This utility allows you to easily patch/replace the UI language in the Control Center application with just one click, without permanently breaking the strict WindowsApps folder permissions. 

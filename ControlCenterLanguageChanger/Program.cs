@@ -290,12 +290,17 @@ namespace ControlCenterPatcher
                 var dirs = Directory.GetDirectories(windowsAppsPath);
                 
                 var targetDir = dirs.FirstOrDefault(d => 
-                    Path.GetFileName(d).StartsWith("CCU.WinUI_") || 
-                    Path.GetFileName(d).StartsWith("ControlCenter3_"));
+                {
+                    string folderName = Path.GetFileName(d);
+                    bool isTargetApp = folderName.StartsWith("CCU.WinUI_") || folderName.StartsWith("ControlCenter3_");
+                    bool isNotJunk = !folderName.Contains("neutral") && !folderName.Contains("split") && !folderName.Contains("~");
+
+                    return isTargetApp && isNotJunk;
+                });
 
                 if (targetDir == null)
                 {
-                    PrintError("Папка программы (CCU.WinUI / ControlCenter3) не найдена в WindowsApps!");
+                    PrintError("Главная папка программы (CCU.WinUI / ControlCenter3) не найдена в WindowsApps!");
                     Pause();
                     return null;
                 }

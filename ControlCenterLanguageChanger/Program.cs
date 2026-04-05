@@ -141,10 +141,12 @@ namespace ControlCenterPatcher
                 return;
             }
             
-            string sysJsonPath = Path.Combine(targetDir, "Strings_Json", $"{targetLangCode}.json");
+            string jsonFolder = Directory.Exists(Path.Combine(targetDir, "Strings_Json")) ? "Strings_Json" : "languages";
+
+            string sysJsonPath = Path.Combine(targetDir, jsonFolder, $"{targetLangCode}.json");
             string sysResxPath = Path.Combine(targetDir, "Win32", "Resources_String", $"{targetLangCode}.resx");
-            
-            string etalonJson = Path.Combine(targetDir, "Strings_Json", "en-US.json");
+
+            string etalonJson = Path.Combine(targetDir, jsonFolder, "en-US.json");
             string etalonResx = Path.Combine(targetDir, "Win32", "Resources_String", "en-US.resx");
 
             Console.WriteLine($"\n[*] {T("CheckCompat")}");
@@ -232,6 +234,8 @@ namespace ControlCenterPatcher
             Console.WriteLine($"[*] {T("StoppingServices")}");
             KillProcesses();
             GrantAccessToFolder(targetDir);
+            
+            string jsonFolder = Directory.Exists(Path.Combine(targetDir, "Strings_Json")) ? "Strings_Json" : "languages";
 
             var backups = Directory.GetFiles(backupDir);
             foreach (var backup in backups)
@@ -239,7 +243,7 @@ namespace ControlCenterPatcher
                 string fileName = Path.GetFileName(backup).Replace("_backup", "");
                 
                 string destPath = fileName.EndsWith(".json")
-                    ? Path.Combine(targetDir, "Strings_Json", fileName)
+                    ? Path.Combine(targetDir, jsonFolder, fileName)
                     : Path.Combine(targetDir, "Win32", "Resources_String", fileName);
 
                 try
@@ -283,15 +287,20 @@ namespace ControlCenterPatcher
             string windowsAppsPath = @"C:\Program Files\WindowsApps";
             try
             {
-                var dirs = Directory.GetDirectories(windowsAppsPath, "CCU.WinUI_*");
-                if (dirs.Length == 0)
+                var dirs = Directory.GetDirectories(windowsAppsPath);
+                
+                var targetDir = dirs.FirstOrDefault(d => 
+                    Path.GetFileName(d).StartsWith("CCU.WinUI_") || 
+                    Path.GetFileName(d).StartsWith("ControlCenter3_"));
+
+                if (targetDir == null)
                 {
-                    PrintError("Папка программы (CCU.WinUI) не найдена в WindowsApps!");
+                    PrintError("Папка программы (CCU.WinUI / ControlCenter3) не найдена в WindowsApps!");
                     Pause();
                     return null;
                 }
 
-                return dirs[0];
+                return targetDir;
             }
             catch (UnauthorizedAccessException)
             {

@@ -10,7 +10,7 @@ This utility allows you to easily patch/replace the UI language in the Control C
 HOW TO USE:
 
 1\. Extract the archive into any folder on your PC.
-2\. Run "ControlCenterPatcher.exe" (it will automatically prompt for Administrator privileges).
+2\. Run "ControlCenterLanguageChanger.exe" (it will automatically prompt for Administrator privileges).
 3\. Select your desired translation from the menu. The program will automatically create a backup of your original files, apply the new language, and safely restore the system ownership (TrustedInstaller) to the folder.
 4\. Restart your Control Center to enjoy the new language!
 
